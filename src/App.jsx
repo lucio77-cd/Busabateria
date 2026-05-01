@@ -10,6 +10,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Cadastro mode="login" />} />
         <Route path="/registrar" element={<Cadastro mode="registrar" />} />
+        <Route path="/admin/cadastrar" element={<CadastroProduto />} />
       </Routes>
     </Router>
   );
