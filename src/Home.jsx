@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './index.css';
 import './Home.css';
 
 const Home = () => {
@@ -14,7 +15,9 @@ const Home = () => {
 
       <main className="hero">
         <div className="raio-container">
-          <svg viewBox="0 0 24 24" className="raio-icon"><path d="M13 10V3L4 14H11V21L20 10H13Z" /></svg>
+          <svg viewBox="0 0 24 24" className="raio-icon">
+            <path d="M13 10V3L4 14H11V21L20 10H13Z" />
+          </svg>
         </div>
         <h1>Encontre a bateria certa. <span>Vapt-Vupt.</span></h1>
         
@@ -28,4 +31,3 @@ const Home = () => {
 };
 
 export default Home;
-
