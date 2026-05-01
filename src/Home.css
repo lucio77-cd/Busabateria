@@ -1,54 +1,111 @@
-/* src/Home.css */
-
-.navbar {
-  /* ... mantenha o flex e padding atuais ... */
-  padding: 20px 40px; /* Ajuste para não quebrar no mobile */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0a0a;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
+
+/* LOGO THE FLASH */
 .logo {
-  /* 1. Fonte Estilo HQ (Negrito, Itálico, Angular) */
   font-family: 'Kanit', sans-serif;
   font-style: italic;
   font-weight: 900;
-  font-size: 2.2rem; /* Aumentei um pouco */
-  letter-spacing: -1px; /* Letras mais juntas como no poster */
+  font-size: 2.2rem; 
+  letter-spacing: -1px; 
   text-transform: uppercase;
-  
-  /* 2. Efeito Metálico (Chanfrado Prata) */
-  color: #e2e8f0; /* Base cinza clara */
+  color: #e2e8f0; 
   background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent; /* Necessário para o gradiente no texto */
-  
-  /* 3. Sombra e Chanfro Falso */
-  text-shadow: 
-    0px 2px 0px #64748b, /* Chanfro inferior */
-    0px 4px 10px rgba(255, 69, 0, 0.3); /* Brilho laranja sutil de fundo */
-  
-  transition: transform 0.2s ease;
+  -webkit-text-fill-color: transparent; 
+  text-shadow: 0px 2px 0px #64748b, 0px 4px 10px rgba(255, 69, 0, 0.3); 
 }
 
-/* Efeito no Hover (Opcional, para dar emoção) */
-.logo:hover {
-  transform: scale(1.05) skewX(-5deg); /* Aumenta e inclina mais */
-}
-
-/* Estilo do "BAT" (Laranja Elétrico/Raio) */
 .logo span {
-  /* 1. Efeito Metálico Dourado/Laranja */
   background: linear-gradient(180deg, #fffbeb 0%, #fb923c 50%, #ea580c 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  /* 2. Brilho Laranja Intenso (Efeito Raio) */
   filter: drop-shadow(0 0 8px #ff4500);
 }
 
-/* Responsividade para o mobile */
-@media (max-width: 768px) {
-  .logo {
-    font-size: 1.8rem;
-  }
+.btn-login {
+  background: transparent;
+  color: #a1a1aa;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 50px;
+}
+
+.raio-container {
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 15px #FF4500);
+}
+
+.raio-icon {
+  width: 80px;
+  height: 80px;
+  fill: #FF4500;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  color: white;
+  margin-bottom: 30px;
+  text-align: center;
+  max-width: 80%;
+}
+
+.hero h1 span {
+  color: #991b1b;
+  display: block;
+}
+
+.search-box {
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  background: #1a1a1a;
+  border: 1px solid #FF4500;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 15px;
+  color: white;
+  outline: none;
+}
+
+.btn-buscar {
+  background: #991b1b;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .logo { font-size: 1.6rem; }
+  .hero h1 { font-size: 1.8rem; }
+  .navbar { padding: 20px; }
 }
