@@ -1,89 +1,54 @@
-.home-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #0a0a0a;
-}
+/* src/Home.css */
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 60px;
+  /* ... mantenha o flex e padding atuais ... */
+  padding: 20px 40px; /* Ajuste para não quebrar no mobile */
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 2px;
+  /* 1. Fonte Estilo HQ (Negrito, Itálico, Angular) */
+  font-family: 'Kanit', sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 2.2rem; /* Aumentei um pouco */
+  letter-spacing: -1px; /* Letras mais juntas como no poster */
+  text-transform: uppercase;
+  
+  /* 2. Efeito Metálico (Chanfrado Prata) */
+  color: #e2e8f0; /* Base cinza clara */
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Necessário para o gradiente no texto */
+  
+  /* 3. Sombra e Chanfro Falso */
+  text-shadow: 
+    0px 2px 0px #64748b, /* Chanfro inferior */
+    0px 4px 10px rgba(255, 69, 0, 0.3); /* Brilho laranja sutil de fundo */
+  
+  transition: transform 0.2s ease;
 }
 
+/* Efeito no Hover (Opcional, para dar emoção) */
+.logo:hover {
+  transform: scale(1.05) skewX(-5deg); /* Aumenta e inclina mais */
+}
+
+/* Estilo do "BAT" (Laranja Elétrico/Raio) */
 .logo span {
-  color: #FF4500;
+  /* 1. Efeito Metálico Dourado/Laranja */
+  background: linear-gradient(180deg, #fffbeb 0%, #fb923c 50%, #ea580c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 2. Brilho Laranja Intenso (Efeito Raio) */
+  filter: drop-shadow(0 0 8px #ff4500);
 }
 
-.btn-login {
-  background: transparent;
-  color: #a1a1aa;
-  font-size: 1rem;
+/* Responsividade para o mobile */
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.8rem;
+  }
 }
-
-.hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 100px;
-}
-
-.raio-container {
-  margin-bottom: 30px;
-  filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
-}
-
-.raio-icon {
-  width: 80px;
-  height: 80px;
-  fill: #FF4500;
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-  color: white;
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.hero h1 span {
-  color: #991b1b; /* Vermelho escuro do Vapt-Vupt */
-}
-
-.search-box {
-  width: 90%;
-  max-width: 700px;
-  display: flex;
-  background: #1a1a1a;
-  border: 1px solid #FF4500;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
-}
-
-.search-box input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 15px 20px;
-  color: white;
-  font-size: 1rem;
-}
-
-.btn-buscar {
-  background: #991b1b;
-  color: white;
-  padding: 0 30px;
-  font-weight: bold;
-}
-
