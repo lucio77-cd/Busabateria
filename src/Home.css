@@ -1,0 +1,89 @@
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0a0a;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.logo span {
+  color: #FF4500;
+}
+
+.btn-login {
+  background: transparent;
+  color: #a1a1aa;
+  font-size: 1rem;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px;
+}
+
+.raio-container {
+  margin-bottom: 30px;
+  filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
+}
+
+.raio-icon {
+  width: 80px;
+  height: 80px;
+  fill: #FF4500;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.hero h1 span {
+  color: #991b1b; /* Vermelho escuro do Vapt-Vupt */
+}
+
+.search-box {
+  width: 90%;
+  max-width: 700px;
+  display: flex;
+  background: #1a1a1a;
+  border: 1px solid #FF4500;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 15px 20px;
+  color: white;
+  font-size: 1rem;
+}
+
+.btn-buscar {
+  background: #991b1b;
+  color: white;
+  padding: 0 30px;
+  font-weight: bold;
+}
+
