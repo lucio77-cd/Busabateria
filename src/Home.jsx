@@ -1,30 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './index.css';
 import './Home.css';
 
 const Home = () => {
+  const [busca, setBusca] = useState('');
   const navigate = useNavigate();
+
+  const aoBuscar = (e) => {
+    e.preventDefault();
+    console.log("Procurando por:", busca);
+    // No futuro, aqui faremos a busca no Firestore
+  };
 
   return (
     <div className="home-container">
-      <nav className="navbar">
-        <div className="logo">BUSCA<span>BAT</span></div>
-        <button onClick={() => navigate('/login')} className="btn-login">Login</button>
-      </nav>
-
-      <main className="hero">
-        <div className="raio-container">
-          <svg viewBox="0 0 24 24" className="raio-icon">
-            <path d="M13 10V3L4 14H11V21L20 10H13Z" />
-          </svg>
+      <header className="home-header">
+        <div className="logo">
+          BUSCA<span>BAT</span>
         </div>
+        {/* LINK ATIVADO: Leva para a tela de Login */}
+        <nav className="nav-links">
+          <button onClick={() => navigate('/login')} className="btn-login-texto">
+            Login
+          </button>
+        </nav>
+      </header>
+
+      <main className="home-main">
+        <div className="icon-bolt">⚡</div>
         <h1>Encontre a bateria certa. <span>Vapt-Vupt.</span></h1>
         
-        <div className="search-box">
-          <input type="text" placeholder="Digite o modelo do carro, moto..." />
-          <button className="btn-buscar">BUSCAR</button>
-        </div>
+        <form onSubmit={aoBuscar} className="search-box">
+          <input 
+            type="text" 
+            placeholder="Digite o modelo do carro, moto..." 
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+          />
+          <button type="submit" className="btn-buscar">BUSCAR</button>
+        </form>
       </main>
     </div>
   );
