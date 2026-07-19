@@ -12,14 +12,15 @@ const Cadastro = ({ mode }) => {
   const [tipo, setTipo] = useState(null); // "cliente" | "loja"
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [enviando, setEnviando] = useState(false);
 
   const redirecionar = (tipoUsuario) => {
-  if (tipoUsuario === 'loja') {
-    navigate('/admin');
-  } else {
-    navigate('/');
-  }
-};
+    if (tipoUsuario === 'loja') {
+      navigate('/admin');
+    } else {
+      navigate('/');
+    }
+  };
 
   const loginComGoogle = async () => {
     if (!isLogin && !tipo) {
@@ -27,6 +28,7 @@ const Cadastro = ({ mode }) => {
       return;
     }
 
+    setEnviando(true);
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
@@ -51,11 +53,14 @@ const Cadastro = ({ mode }) => {
     } catch (error) {
       console.error("Erro ao logar com Google:", error.message);
       alert("Erro ao acessar com Google. Tente novamente.");
+    } finally {
+      setEnviando(false);
     }
   };
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
+    setEnviando(true);
     try {
       if (isLogin) {
         const result = await signInWithEmailAndPassword(auth, email, senha);
@@ -64,6 +69,7 @@ const Cadastro = ({ mode }) => {
       } else {
         if (!tipo) {
           alert("Escolha se você é Cliente ou Loja antes de continuar.");
+          setEnviando(false);
           return;
         }
         const result = await createUserWithEmailAndPassword(auth, email, senha);
@@ -78,6 +84,8 @@ const Cadastro = ({ mode }) => {
     } catch (error) {
       console.error("Erro no cadastro/login:", error.message);
       alert("Erro: " + error.message);
+    } finally {
+      setEnviando(false);
     }
   };
 
@@ -129,24 +137,25 @@ const Cadastro = ({ mode }) => {
 
         <button 
           onClick={loginComGoogle}
+          disabled={enviando}
           style={{ 
             width: '100%', 
             padding: '12px', 
             borderRadius: '8px', 
             border: '1px solid #ffffff', 
-            background: 'white', 
+            background: enviando ? '#cccccc' : 'white', 
             color: '#000', 
             fontWeight: 'bold',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '10px',
-            cursor: 'pointer',
+            cursor: enviando ? 'not-allowed' : 'pointer',
             marginBottom: '20px'
           }}
         >
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="google" />
-          {isLogin ? 'Entrar com Google' : 'Cadastrar com Google'}
+          {enviando ? 'Aguarde...' : (isLogin ? 'Entrar com Google' : 'Cadastrar com Google')}
         </button>
 
         <div style={{ color: '#555', marginBottom: '20px' }}>———— ou ————</div>
@@ -170,8 +179,8 @@ const Cadastro = ({ mode }) => {
             style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#0a0a0a', color: 'white' }}
           />
 
-          <button type="submit" className="btn-buscar" style={{ padding: '12px', borderRadius: '8px' }}>
-            {isLogin ? 'ACESSAR' : 'CADASTRAR'}
+          <button type="submit" className="btn-buscar" disabled={enviando} style={{ padding: '12px', borderRadius: '8px', cursor: enviando ? 'not-allowed' : 'pointer' }}>
+            {enviando ? 'Aguarde...' : (isLogin ? 'ACESSAR' : 'CADASTRAR')}
           </button>
         </form>
 
