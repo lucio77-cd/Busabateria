@@ -14,12 +14,12 @@ const Cadastro = ({ mode }) => {
   const [senha, setSenha] = useState('');
 
   const redirecionar = (tipoUsuario) => {
-    if (tipoUsuario === 'loja') {
-      navigate('/admin/cadastrar');
-    } else {
-      navigate('/');
-    }
-  };
+  if (tipoUsuario === 'loja') {
+    navigate('/admin');
+  } else {
+    navigate('/');
+  }
+};
 
   const loginComGoogle = async () => {
     if (!isLogin && !tipo) {
