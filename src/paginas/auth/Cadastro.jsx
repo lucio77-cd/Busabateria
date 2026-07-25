@@ -1,201 +1,124 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../../firebase/config';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import '../../estilos/Home.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Zap } from "lucide-react";
+import { cadastrar, loginComGoogle } from "../../firebase/auth";
+import { criarUsuario, buscarUsuario } from "../../servicos/usuarioService";
+import "./Auth.css";
 
-const Cadastro = ({ mode }) => {
-  const navigate = useNavigate();
-  const isLogin = mode === 'login';
+export default function Cadastro() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [role, setRole] = useState("cliente");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const navegar = useNavigate();
 
-  const [tipo, setTipo] = useState(null); // "cliente" | "loja"
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [enviando, setEnviando] = useState(false);
-
-  const redirecionar = (tipoUsuario) => {
-    if (tipoUsuario === 'loja') {
-      navigate('/admin');
-    } else {
-      navigate('/');
-    }
-  };
-
-  const loginComGoogle = async () => {
-    if (!isLogin && !tipo) {
-      alert("Escolha se você é Cliente ou Loja antes de continuar.");
-      return;
-    }
-
-    setEnviando(true);
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const uid = result.user.uid;
-      const userRef = doc(db, "usuarios", uid);
-      const userSnap = await getDoc(userRef);
-
-      let tipoFinal;
-      if (!userSnap.exists()) {
-        tipoFinal = tipo || 'cliente';
-        await setDoc(userRef, {
-          nome: result.user.displayName || '',
-          email: result.user.email,
-          tipo: tipoFinal,
-          dataCadastro: serverTimestamp()
-        });
-      } else {
-        tipoFinal = userSnap.data().tipo;
-      }
-
-      redirecionar(tipoFinal);
-    } catch (error) {
-      console.error("Erro ao logar com Google:", error.message);
-      alert("Erro ao acessar com Google. Tente novamente.");
-    } finally {
-      setEnviando(false);
-    }
-  };
-
-  const handleEmailSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setEnviando(true);
+    setErro("");
+    setCarregando(true);
     try {
-      if (isLogin) {
-        const result = await signInWithEmailAndPassword(auth, email, senha);
-        const userSnap = await getDoc(doc(db, "usuarios", result.user.uid));
-        redirecionar(userSnap.exists() ? userSnap.data().tipo : 'cliente');
-      } else {
-        if (!tipo) {
-          alert("Escolha se você é Cliente ou Loja antes de continuar.");
-          setEnviando(false);
-          return;
-        }
-        const result = await createUserWithEmailAndPassword(auth, email, senha);
-        await setDoc(doc(db, "usuarios", result.user.uid), {
-          nome: '',
-          email,
-          tipo,
-          dataCadastro: serverTimestamp()
-        });
-        redirecionar(tipo);
-      }
-    } catch (error) {
-      console.error("Erro no cadastro/login:", error.message);
-      alert("Erro: " + error.message);
+      const credencial = await cadastrar(email, senha);
+      await criarUsuario(credencial.user.uid, { email, role });
+      navegar(role === "loja" ? "/loja" : "/painel");
+    } catch {
+      setErro("Não foi possível criar a conta. Verifique os dados.");
     } finally {
-      setEnviando(false);
+      setCarregando(false);
     }
-  };
+  }
+
+  async function handleGoogle() {
+    setErro("");
+    setCarregando(true);
+    try {
+      const credencial = await loginComGoogle();
+      const dados = await buscarUsuario(credencial.user.uid);
+      if (!dados) {
+        navegar("/escolher-papel");
+      } else {
+        navegar(dados.role === "loja" ? "/loja" : "/painel");
+      }
+    } catch {
+      setErro("Não foi possível continuar com Google. Tenta de novo.");
+    } finally {
+      setCarregando(false);
+    }
+  }
 
   return (
-    <div className="home-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <div style={{ textAlign: 'center', width: '90%', maxWidth: '400px', background: '#1a1a1a', padding: '40px', borderRadius: '15px', border: '1px solid #FF4500' }}>
-        <div className="logo" style={{ marginBottom: '20px', cursor: 'pointer' }} onClick={() => navigate('/')}>
-          BUSCA<span>BAT</span>
+    <div className="pagina-auth">
+      <div className="pagina-auth__marca">
+        <div className="cartao-auth__logo" style={{ color: "white" }}>
+          <Zap color="#FFC107" /> BuscaBat
         </div>
-        
-        <h2 style={{ color: 'white', marginBottom: '20px' }}>
-          {isLogin ? 'Entrar na Conta' : 'Criar Nova Conta'}
-        </h2>
+        <h2>A bateria certa. Perto de você.</h2>
+        <p>Crie sua conta como cliente pra trocar sua bateria, ou como loja pra vender.</p>
+      </div>
 
-        {!isLogin && (
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-            <button
-              type="button"
-              onClick={() => setTipo('cliente')}
-              style={{
-                flex: 1,
-                padding: '12px',
-                borderRadius: '8px',
-                border: tipo === 'cliente' ? '2px solid #FF4500' : '1px solid #333',
-                background: tipo === 'cliente' ? '#2a1000' : '#0a0a0a',
-                color: 'white',
-                cursor: 'pointer'
-              }}
-            >
-              Sou Cliente
-            </button>
-            <button
-              type="button"
-              onClick={() => setTipo('loja')}
-              style={{
-                flex: 1,
-                padding: '12px',
-                borderRadius: '8px',
-                border: tipo === 'loja' ? '2px solid #FF4500' : '1px solid #333',
-                background: tipo === 'loja' ? '#2a1000' : '#0a0a0a',
-                color: 'white',
-                cursor: 'pointer'
-              }}
-            >
-              Sou Loja
-            </button>
+      <div className="pagina-auth__conteudo">
+        <form className="cartao cartao-auth" onSubmit={handleSubmit}>
+          <div className="cartao-auth__logo">
+            <Zap color="#FFC107" /> BuscaBat
           </div>
-        )}
+          <h1>Criar conta</h1>
+          <p className="cartao-auth__subtitulo">Leva menos de um minuto.</p>
 
-        <button 
-          onClick={loginComGoogle}
-          disabled={enviando}
-          style={{ 
-            width: '100%', 
-            padding: '12px', 
-            borderRadius: '8px', 
-            border: '1px solid #ffffff', 
-            background: enviando ? '#cccccc' : 'white', 
-            color: '#000', 
-            fontWeight: 'bold',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            cursor: enviando ? 'not-allowed' : 'pointer',
-            marginBottom: '20px'
-          }}
-        >
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="google" />
-          {enviando ? 'Aguarde...' : (isLogin ? 'Entrar com Google' : 'Cadastrar com Google')}
-        </button>
+          <div className="campo">
+            <label htmlFor="email">E-mail</label>
+            <input
+              id="email" type="email" className="input" placeholder="seu@email.com"
+              value={email} onChange={(e) => setEmail(e.target.value)} required
+            />
+          </div>
+          <div className="campo">
+            <label htmlFor="senha">Senha</label>
+            <input
+              id="senha" type="password" className="input" placeholder="Mínimo 6 caracteres"
+              value={senha} onChange={(e) => setSenha(e.target.value)} required
+            />
+          </div>
+          <div className="campo">
+            <label htmlFor="role">Você é</label>
+            <select id="role" className="input" value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="cliente">Cliente — quero trocar minha bateria</option>
+              <option value="loja">Loja/oficina — quero vender baterias</option>
+            </select>
+          </div>
 
-        <div style={{ color: '#555', marginBottom: '20px' }}>———— ou ————</div>
+          {erro && <p className="erro-form">{erro}</p>}
 
-        <form onSubmit={handleEmailSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#0a0a0a', color: 'white' }}
-          />
-          <input
-            type="password"
-            placeholder="Senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
-            minLength={6}
-            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #333', background: '#0a0a0a', color: 'white' }}
-          />
-
-          <button type="submit" className="btn-buscar" disabled={enviando} style={{ padding: '12px', borderRadius: '8px', cursor: enviando ? 'not-allowed' : 'pointer' }}>
-            {enviando ? 'Aguarde...' : (isLogin ? 'ACESSAR' : 'CADASTRAR')}
+          <button type="submit" className="btn btn--primario btn--largo" disabled={carregando}>
+            {carregando ? "Criando conta..." : "Cadastrar"}
           </button>
-        </form>
 
-        <p style={{ color: '#a1a1aa', marginTop: '20px', fontSize: '0.9rem' }}>
-          {isLogin ? 'Não tem conta?' : 'Já tem conta?'} 
-          <span 
-            onClick={() => navigate(isLogin ? '/registrar' : '/login')} 
-            style={{ color: '#FF4500', cursor: 'pointer', marginLeft: '5px', fontWeight: 'bold' }}
+          <div className="divisor"><span>ou</span></div>
+
+          <button
+            type="button"
+            className="btn btn--google btn--largo"
+            onClick={handleGoogle}
+            disabled={carregando}
           >
-            {isLogin ? 'Cadastre-se' : 'Faça Login'}
-          </span>
-        </p>
+            <IconeGoogle /> Continuar com Google
+          </button>
+
+          <p className="cartao-auth__rodape">
+            Já tem conta? <Link to="/login">Entrar</Link>
+          </p>
+        </form>
       </div>
     </div>
   );
-};
+}
 
-export default Cadastro;
+function IconeGoogle() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18">
+      <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/>
+      <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.98v2.33A9 9 0 0 0 9 18z"/>
+      <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.03l2.97-2.33z"/>
+      <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .98 4.97l2.97 2.33C4.66 5.17 6.65 3.58 9 3.58z"/>
+    </svg>
+  );
+}
