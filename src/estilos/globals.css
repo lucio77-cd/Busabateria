@@ -1,0 +1,47 @@
+:root {
+  --azul-escuro: #0D1B3D;
+  --azul-medio: #1E3ABA;
+  --amarelo: #FFC107;
+  --verde: #28A745;
+  --cinza-claro: #F5F6FA;
+  --cinza-escuro: #333333;
+  --branco: #FFFFFF;
+  --fonte-titulo: "Poppins", sans-serif;
+  --fonte-corpo: "Inter", sans-serif;
+  --raio: 10px;
+  --sombra: 0 4px 16px rgba(13, 27, 61, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--fonte-corpo); color: var(--cinza-escuro); background: var(--branco); }
+h1, h2, h3, h4 { font-family: var(--fonte-titulo); color: var(--azul-escuro); }
+a { color: inherit; }
+button { font-family: inherit; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.75rem 1.3rem; border-radius: var(--raio); font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; border: 1px solid transparent; cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn--primario { background: var(--amarelo); color: var(--azul-escuro); }
+.btn--secundario { background: var(--branco); color: var(--azul-escuro); border-color: var(--azul-escuro); }
+.btn--fantasma { background: transparent; color: var(--azul-escuro); }
+.btn--branco { background: var(--branco); color: var(--azul-escuro); box-shadow: var(--sombra); }
+.btn--largo { width: 100%; }
+
+.campo { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; text-align: left; }
+.campo label { font-size: 0.85rem; font-weight: 500; color: #555; }
+.input {
+  padding: 0.7rem 0.9rem; border: 1px solid #ddd; border-radius: var(--raio);
+  font-size: 0.95rem; font-family: var(--fonte-corpo); outline: none;
+  transition: border-color 0.15s ease;
+}
+.input:focus { border-color: var(--azul-medio); }
+.erro-form { color: #D9364F; font-size: 0.85rem; margin-bottom: 0.8rem; }
+
+.cartao { background: var(--branco); border-radius: 16px; box-shadow: var(--sombra); padding: 1.5rem; }
