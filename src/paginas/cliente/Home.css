@@ -1,0 +1,16 @@
+.app-cliente { min-height: 100vh; background: var(--cinza-claro); }
+.app-cliente__topo {
+  background: var(--branco);
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  position: sticky; top: 0; z-index: 10;
+}
+.app-cliente__logo { display: flex; align-items: center; gap: 0.4rem; font-weight: 800; color: var(--azul-escuro); }
+.app-cliente__conteudo { padding: 1.5rem 1.25rem; max-width: 700px; margin: 0 auto; }
+.app-cliente__saudacao { margin-bottom: 1.5rem; }
+.app-cliente__saudacao p { color: #666; font-size: 0.9rem; }
+
+@media (min-width: 900px) {
+  .app-cliente__conteudo { padding: 2.5rem 1.25rem; }
+}
