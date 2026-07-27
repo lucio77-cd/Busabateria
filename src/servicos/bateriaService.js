@@ -15,6 +15,17 @@ export async function listarBateriasPorLoja(lojaId) {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
+// Busca cross-loja pelo modelo do carro — usado na tela do cliente.
+export async function buscarBateriasCompativeis(modeloCarro) {
+  const q = query(
+    collection(db, "baterias"),
+    where("modelosCompativeis", "array-contains", modeloCarro),
+    limit(20) // economia — nunca sem limite
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
 export function criarBateria(lojaId, dados) {
   return addDoc(collection(db, "baterias"), {
     lojaId,
