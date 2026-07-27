@@ -1,0 +1,34 @@
+.catalogo { max-width: 900px; }
+.catalogo__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+.catalogo__form-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+
+.catalogo__lista { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.item-bateria {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+.item-bateria__info h4 { font-size: 1rem; }
+.item-bateria__info p { color: #666; font-size: 0.85rem; margin-top: 0.2rem; }
+.item-bateria__preco { font-family: var(--fonte-titulo); font-weight: 700; color: var(--azul-escuro); white-space: nowrap; }
+.item-bateria__acoes { display: flex; gap: 0.5rem; }
+.item-bateria__acoes button {
+  background: none; border: 1px solid #ddd; border-radius: 8px;
+  padding: 0.4rem 0.6rem; cursor: pointer; color: #555;
+}
+.item-bateria__acoes button:hover { border-color: var(--azul-medio); color: var(--azul-medio); }
+
+.vazio { text-align: center; color: #888; padding: 2rem 0; }
+
+@media (min-width: 700px) {
+  .catalogo__form { grid-template-columns: 1fr 1fr; }
+  .catalogo__form-linha { grid-column: 1 / -1; grid-template-columns: 1fr 1fr 1fr; }
+  .catalogo__form-botao { grid-column: 1 / -1; }
+}
