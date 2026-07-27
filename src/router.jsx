@@ -5,6 +5,7 @@ import Cadastro from "./paginas/auth/Cadastro";
 import EscolherPapel from "./paginas/auth/EscolherPapel";
 import { RotaProtegida } from "./componentes/layout/RotaProtegida";
 import Home from "./paginas/cliente/Home";
+import BuscarBateria from "./paginas/cliente/BuscarBateria";
 import DashboardLoja from "./paginas/loja/DashboardLoja";
 import CatalogoBaterias from "./paginas/loja/CatalogoBaterias";
 
@@ -18,6 +19,14 @@ export const router = createBrowserRouter([
     element: (
       <RotaProtegida rolesPermitidos={["cliente"]}>
         <Home />
+      </RotaProtegida>
+    ),
+  },
+  {
+    path: "/painel/buscar",
+    element: (
+      <RotaProtegida rolesPermitidos={["cliente"]}>
+        <BuscarBateria />
       </RotaProtegida>
     ),
   },
