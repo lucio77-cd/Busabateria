@@ -1,0 +1,12 @@
+.buscar-bateria { max-width: 700px; }
+.buscar-bateria__campo { margin: 1.2rem 0 1.5rem; }
+.buscar-bateria__resultado {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem; padding: 1.1rem; margin-bottom: 0.8rem;
+}
+.buscar-bateria__info h4 { font-size: 1rem; }
+.buscar-bateria__info p { color: #666; font-size: 0.85rem; margin-top: 0.2rem; }
+.buscar-bateria__preco { text-align: right; white-space: nowrap; }
+.buscar-bateria__preco strong { display: block; font-family: var(--fonte-titulo); font-size: 1.15rem; color: var(--azul-escuro); }
+.buscar-bateria__preco span { font-size: 0.75rem; color: #888; }
+.vazio { text-align: center; color: #888; padding: 2rem 0; }
